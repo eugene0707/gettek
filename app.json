@@ -1,0 +1,14 @@
+{
+  "name": "Gett EK",
+  "description": "Go test task for Gett from Evgeny Kondrashov",
+  "keywords": [
+    "gett",
+    "go",
+    "test",
+    "Evgeniy"
+  ],
+  "image": "heroku/go:1.7",
+  "mount_dir": "src/github.com/eugene0707/gettek",
+  "website": "http://github.com/eugene0707/gettek",
+  "repository": "http://github.com/eugene0707/gettek"
+}
