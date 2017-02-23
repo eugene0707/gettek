@@ -8,6 +8,8 @@ import (
 	"github.com/eugene0707/gettek/models"
 	"flag"
 	"github.com/eugene0707/gettek/common"
+	"time"
+	"strings"
 )
 
 func toJson(v interface{}) string {
@@ -74,16 +76,26 @@ func importDrivers(raw []byte) {
 
 func importMetrics(raw []byte) {
 	fmt.Println("Importing metrics")
+	start_time := time.Now()
+	jsonstring := string(raw)
 
-	var objArray []models.Metric
-	err := json.Unmarshal(raw, &objArray)
-	if err != nil {
-		fmt.Println(err.Error())
+	// Workaround for invalid JSON
+	if string(jsonstring[0]) != "[" {
+		jsonarray := strings.Split(jsonstring, "\n")
+		jsonstring = "[" + strings.Join(jsonarray, ",")
+		jsonlen := len(jsonstring)
+		if string(jsonstring[jsonlen-1]) == "," { jsonstring = jsonstring[0:jsonlen-1] }
+		jsonstring = jsonstring + "]"
 	}
 
-	for _, el := range objArray {
-		common.CurrentDB().Save(&el)
-		fmt.Println(toJson(el))
+	result, err := models.LoadMetricsFromJSONArray(jsonstring)
+
+	if err != nil {
+		fmt.Println(err.Error())
+	} else
+	{
+		fmt.Printf("Loaded %d metrics\n", result)
+		fmt.Printf("Execution time: %s\n", time.Since(start_time))
 	}
 
 }
