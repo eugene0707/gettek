@@ -18,10 +18,17 @@ go run utils/load_data.go -type=metrics -file=data/metrics.json
 
 ```
 
-go test test/apitest.go
+go test test/api_test.go
 
 ```
 
 ####Runtime configuration
 
-.env see .env.example
+.env and test/.env
+```
+
+DATABASE_URL = postgres://dbuser:password@localhost:5432/gettek_dev
+BEEGO_RUNMODE = dev
+
+```
+see .env.example
